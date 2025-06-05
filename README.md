@@ -26,8 +26,8 @@ A modern, AI-powered web app to generate, polish, and customize resumes and cove
 
 1. **Clone the repository:**
    ```sh
-   git clone <repo-url>
-   cd Personalized\ Resume:Cover\ Letter\ Generator
+   git clone https://github.com/trevoralpert/personalized-resume-cover-letter-generator.git
+   cd personalized-resume-cover-letter-generator
    ```
 
 2. **Install dependencies:**
@@ -40,8 +40,12 @@ A modern, AI-powered web app to generate, polish, and customize resumes and cove
      ```env
      OPENAI_API_KEY=sk-...
      ```
+   - **Note:** The `.env` file is excluded from version control by `.gitignore` for your security. Be sure to add your own API key locally.
 
-4. **Run the app:**
+4. **Check .gitignore before pushing to GitHub:**
+   - The repository includes a `.gitignore` file that excludes `.env`, Python cache files, macOS files, the `archive/` directory, and all sample/output files. This helps keep your repository clean and secure.
+
+5. **Run the app:**
    ```sh
    streamlit run main_app.py
    ```
