@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment variables
+.env
+
+# macOS
+.DS_Store
+
+# Archive and sample output
+archive/
+*.docx
+*.pdf
+*.jpg
+*.pages
+*.txt 
