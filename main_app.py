@@ -66,6 +66,7 @@ if st.session_state.step == 1:
         st.success("Resume loaded from DOCX. You can review and edit below.")
     with st.form("resume_polish_form"):
         job_title = st.text_input("Job Title", value=st.session_state.job_title, placeholder="Enter the job title...")
+        company_name = st.text_input("Company Name", value=st.session_state.company_name, placeholder="Enter the company name you are applying to...")
         job_description = st.text_area("Job Description", value=st.session_state.job_description, placeholder="Paste the job description here...", height=120)
         resume_content = st.text_area("Resume Content", value=st.session_state.resume_content, placeholder="Paste your resume content here...", height=300)
         polish_prompt = st.text_area("Polish Instruction (Optional)", value=st.session_state.polish_prompt, placeholder="Enter specific instructions or areas for improvement (optional)...", height=70)
@@ -138,6 +139,7 @@ Job Description: {job_description}
                     st.session_state.polish_prompt = polish_prompt
                     st.session_state.polished_resume = gpt_output
                     st.session_state.resume_json_data = resume_data  # Save for editing
+                    st.session_state.company_name = company_name
                     st.success("Resume polished! You can now review and edit each section below.")
                 except Exception as e:
                     st.error(f"Error: {e}")
@@ -325,6 +327,32 @@ if 'resume_json_data' in st.session_state and st.session_state.resume_json_data:
     # Summary
     st.subheader("Professional Summary")
     resume_data["summary"] = st.text_area("Summary", value=resume_data.get("summary", ""), height=80)
+    # Add creativity slider and regenerate button
+    summary_temp = st.slider("Creativity (Temperature)", min_value=0.0, max_value=1.0, value=0.7, step=0.05, key="summary_temp")
+    if st.button("Regenerate Professional Summary"):
+        # Use current resume data as context
+        skills = resume_data.get("skills", [])
+        experience = resume_data.get("experience", [])
+        education = resume_data.get("education", {})
+        # Build a prompt
+        prompt = (
+            "Given the following resume data, generate a concise, impactful professional summary paragraph. "
+            "Highlight the candidate's strengths, relevant experience, and technical skills. Return only the summary paragraph.\n"
+            f"Skills: {skills}\nExperience: {experience}\nEducation: {education}"
+        )
+        try:
+            response = openai.chat.completions.create(
+                model="gpt-4",
+                messages=[{"role": "user", "content": prompt}],
+                temperature=summary_temp,
+                max_tokens=200,
+            )
+            new_summary = response.choices[0].message.content.strip()
+            resume_data["summary"] = new_summary
+            st.success("Professional Summary regenerated!")
+            st.rerun()
+        except Exception as e:
+            st.error(f"Error regenerating summary: {e}")
     # Skills
     st.subheader("Technical Skills")
     skills = resume_data.get("skills", [])
