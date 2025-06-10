@@ -86,4 +86,4 @@ A modern, AI-powered web app to generate, polish, and customize resumes and cove
 ---
 
 ## License
-MIT License (or specify your preferred license) 
+MIT License
