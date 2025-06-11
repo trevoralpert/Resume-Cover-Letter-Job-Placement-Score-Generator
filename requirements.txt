@@ -3,3 +3,4 @@ openai
 python-dotenv
 pinecone-client 
 python-docx
+reportlab
